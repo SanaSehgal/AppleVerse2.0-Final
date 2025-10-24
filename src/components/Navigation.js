@@ -1,18 +1,28 @@
 import React, { useState } from 'react';
-import { Apple, Home, Package, Info, LogIn } from 'lucide-react';
+import { Apple, Home, Package, Info, LogIn, PlusCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom'; // ✅ Import useNavigate
 
-const Navigation = ({ onAdminLogin }) => {
+const Navigation = () => {
   const [activeTab, setActiveTab] = useState('home');
+  const navigate = useNavigate(); // ✅ Hook for navigation
 
   const tabs = [
-    { id: 'home', label: 'Home', icon: Home },
-    { id: 'products', label: 'Products', icon: Package },
-    { id: 'about', label: 'About', icon: Info }
+    { id: 'home', label: 'Home', icon: Home, route: '/' },
+    { id: 'Library', label: 'Library', icon: Package, route: '/library' },
+    { id: 'createApple', label: 'Create Apple', icon: PlusCircle, route: '/createapple' },
+    { id: 'about', label: 'About', icon: Info, route: '/about' },
   ];
 
-  const handleTabClick = (tabId) => {
-    setActiveTab(tabId);
-    console.log(`Navigating to: ${tabId}`);
+  const handleTabClick = (tab) => {
+    setActiveTab(tab.id);
+    if (tab.route) {
+      navigate(tab.route); // ✅ Navigate to page route
+    }
+    console.log(`Navigating to: ${tab.id}`);
+  };
+
+  const handleSignupLogin = () => {
+    navigate('/signup-login'); // ✅ Go to Signup/Login page
   };
 
   return (
@@ -32,7 +42,7 @@ const Navigation = ({ onAdminLogin }) => {
               <button
                 key={tab.id}
                 className={`nav-tab ${activeTab === tab.id ? 'active' : ''}`}
-                onClick={() => handleTabClick(tab.id)}
+                onClick={() => handleTabClick(tab)} // ✅ Pass full tab object
               >
                 <IconComponent size={18} />
                 <span>{tab.label}</span>
@@ -41,15 +51,15 @@ const Navigation = ({ onAdminLogin }) => {
           })}
         </div>
 
-        {/* Clean Admin Button */}
+        {/* Signup/Login Button */}
         <div className="nav-actions">
           <button 
             className="admin-login-btn"
-            onClick={onAdminLogin}
-            title="Administrator Access"
+            onClick={handleSignupLogin} // ✅ Updated navigation logic
+            title="Signup or Login"
           >
             <LogIn size={18} />
-            <span>Admin</span>
+            <span>Signup/Login</span>
           </button>
         </div>
       </div>

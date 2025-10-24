@@ -7,8 +7,7 @@ const HeroSection = () => {
         <h1>AppleVerse 2.0</h1>
         <p className="tagline">Discover the World of Apples - From Farm to Table</p>
         <p className="subtitle">
-          Explore thousands of apple varieties with intelligent search, 
-          image recognition, and comprehensive data from Agriculture Canada
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
         </p>
       </div>
       <div className="hero-image">

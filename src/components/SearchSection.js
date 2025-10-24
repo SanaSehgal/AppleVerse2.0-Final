@@ -73,10 +73,7 @@ const SearchSection = ({
           )}
           {isSearching ? 'Searching...' : 'Search'}
         </button>
-        <button className="image-search-btn">
-          <Camera size={20} />
-          Search by Image
-        </button>
+        
       </div>
       
       <div className="quick-filters">

@@ -3,20 +3,12 @@ import React from 'react';
 const FeaturesGrid = () => {
   const features = [
     {
-      icon: '🔍',
-      title: 'Smart Search',
-      description: 'Ask questions in natural language and get intelligent, relevant results tailored to your needs.'
+      icon: '✍️',
+      title: 'Blog',
+      description: 'write blog posts that help users explore and learn more about Apple technology, updates, and features'
     },
-    {
-      icon: '📱',
-      title: 'Image Recognition',
-      description: 'Upload photos of apples to instantly identify varieties using advanced AI technology.'
-    },
-    {
-      icon: '📊',
-      title: 'Comprehensive Database',
-      description: 'Access detailed information from Agriculture Canada with thousands of apple varieties.'
-    },
+   
+  
     {
       icon: '📥',
       title: 'Export Data',
@@ -27,11 +19,6 @@ const FeaturesGrid = () => {
       title: 'Global Origins',
       description: 'Explore apples from around the world with detailed origin and growing condition data.'
     },
-    {
-      icon: '👥',
-      title: 'Multi-User Friendly',
-      description: 'Designed for farmers, researchers, food companies, and everyday apple enthusiasts.'
-    }
   ];
 
   return (
