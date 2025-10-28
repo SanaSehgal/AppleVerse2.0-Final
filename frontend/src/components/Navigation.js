@@ -1,28 +1,28 @@
 import React, { useState } from 'react';
 import { Apple, Home, Package, Info, LogIn, PlusCircle } from 'lucide-react';
-import { useNavigate } from 'react-router-dom'; // ✅ Import useNavigate
+import { useNavigate } from 'react-router-dom';
 
 const Navigation = () => {
   const [activeTab, setActiveTab] = useState('home');
-  const navigate = useNavigate(); // ✅ Hook for navigation
+  const navigate = useNavigate();
 
   const tabs = [
     { id: 'home', label: 'Home', icon: Home, route: '/' },
-    { id: 'Library', label: 'Library', icon: Package, route: '/library' },
-    { id: 'createApple', label: 'Create Apple', icon: PlusCircle, route: '/createapple' },
+    { id: 'library', label: 'Library', icon: Package, route: '/library' },
+    { id: 'blogs', label: 'Blogs', icon: PlusCircle, route: '/blogs' }, // ✅ Updated label & route
     { id: 'about', label: 'About', icon: Info, route: '/about' },
   ];
 
   const handleTabClick = (tab) => {
     setActiveTab(tab.id);
     if (tab.route) {
-      navigate(tab.route); // ✅ Navigate to page route
+      navigate(tab.route);
     }
     console.log(`Navigating to: ${tab.id}`);
   };
 
   const handleSignupLogin = () => {
-    navigate('/signup-login'); // ✅ Go to Signup/Login page
+    navigate('/signup-login');
   };
 
   return (
@@ -42,7 +42,7 @@ const Navigation = () => {
               <button
                 key={tab.id}
                 className={`nav-tab ${activeTab === tab.id ? 'active' : ''}`}
-                onClick={() => handleTabClick(tab)} // ✅ Pass full tab object
+                onClick={() => handleTabClick(tab)}
               >
                 <IconComponent size={18} />
                 <span>{tab.label}</span>
@@ -53,9 +53,9 @@ const Navigation = () => {
 
         {/* Signup/Login Button */}
         <div className="nav-actions">
-          <button 
+          <button
             className="admin-login-btn"
-            onClick={handleSignupLogin} // ✅ Updated navigation logic
+            onClick={handleSignupLogin}
             title="Signup or Login"
           >
             <LogIn size={18} />

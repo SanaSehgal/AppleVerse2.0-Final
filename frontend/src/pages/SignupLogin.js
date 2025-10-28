@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/SignupLogin.css";
 
-export default function SignupLogin() {
+export default function SignupLogin({ setIsAdmin }) { // ✅ receive setIsAdmin from App.js
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,21 +20,34 @@ export default function SignupLogin() {
 
     try {
       if (isLogin) {
-        // For now, just simulate login (we’ll add backend later)
-        alert("Login successful!");
+        // ✅ Example admin login check (replace with your backend logic)
+        if (email === "admin@appleverse.com" && password === "admin123") {
+          alert("Admin login successful!");
+          setIsAdmin(true); // ✅ mark as admin
+          navigate("/dashboard"); // ✅ go to dashboard
+          return;
+        }
+
+        // ✅ Regular user login
+        const response = await axios.post("http://localhost:5000/login", {
+          email,
+          password,
+        });
+
+        alert(response.data.message || "Login successful!");
         navigate("/");
       } else {
-        // Signup request to backend
+        // ✅ Signup request to backend
         const response = await axios.post("http://localhost:5000/signup", {
           email,
           password,
         });
 
         alert(response.data.message || "Signup successful!");
-        navigate("/");
+        navigate("/signup-login");
       }
     } catch (error) {
-      console.error("Signup error:", error);
+      console.error("Auth error:", error);
       alert(error.response?.data?.message || "Something went wrong!");
     }
   };

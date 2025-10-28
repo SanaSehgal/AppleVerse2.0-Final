@@ -6,9 +6,12 @@ import SearchSection from './components/SearchSection';
 import FeaturesGrid from './components/FeaturesGrid';
 import AdvancedFilters from './components/AdvancedFilters';
 import SearchResults from './components/SearchResults';
+import TemplateCreator from './components/TemplateCreator';
+import TreeScrollPage from './components/TreeScrollPage';
+import AdminDashboard from './components/AdminDashboard';
 import Footer from './components/Footer';
 import CreateApple from './pages/CreateApple';
-import SignupLogin from "./pages/SignupLogin"; // ✅ Correct import
+import SignupLogin from "./pages/SignupLogin";
 import './App.css';
 
 function App() {
@@ -17,46 +20,81 @@ function App() {
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [hasSearched, setHasSearched] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  // Mock search logic
+  // ✅ Mock search data
+  const mockResults = [
+    {
+      id: 1,
+      name: 'Honeycrisp',
+      origin: 'Minnesota, USA',
+      originFlag: '🇺🇸',
+      taste: 'Sweet',
+      texture: 'Extra Crisp',
+      uses: ['Fresh Eating', 'Salads', 'Desserts'],
+      description:
+        'Exceptionally crisp and juicy with a perfect balance of sweetness and tartness. Known for its explosive crunch.',
+      harvestSeason: 'Late September',
+      hardiness: 'Zone 3-6',
+      storage: '4-6 months',
+      color: '#ff6b6b',
+      secondaryColor: '#ffa726',
+      emoji: '🍎',
+    },
+    {
+      id: 2,
+      name: 'Granny Smith',
+      origin: 'Australia',
+      originFlag: '🇦🇺',
+      taste: 'Tart',
+      texture: 'Firm',
+      uses: ['Baking', 'Cooking', 'Fresh Eating'],
+      description:
+        'Bright green with a very tart flavor. Excellent for baking as it holds its shape well when cooked.',
+      harvestSeason: 'October',
+      hardiness: 'Zone 6-9',
+      storage: '5-7 months',
+      color: '#66bb6a',
+      secondaryColor: '#4caf50',
+      emoji: '🍏',
+    },
+    {
+      id: 3,
+      name: 'Gala',
+      origin: 'New Zealand',
+      originFlag: '🇳🇿',
+      taste: 'Sweet',
+      texture: 'Crisp',
+      uses: ['Fresh Eating', 'Salads', 'Sauces'],
+      description: 'Mild, sweet, and aromatic with a thin skin. A great everyday eating apple.',
+      harvestSeason: 'Mid August',
+      hardiness: 'Zone 5-8',
+      storage: '3-4 months',
+      color: '#ffcc80',
+      secondaryColor: '#ffb74d',
+      emoji: '🍎',
+    },
+    {
+      id: 4,
+      name: 'McIntosh',
+      origin: 'Canada',
+      originFlag: '🇨🇦',
+      taste: 'Tart-Sweet',
+      texture: 'Tender',
+      uses: ['Sauces', 'Juice', 'Fresh Eating'],
+      description: 'Classic Canadian apple with tender white flesh and distinctive tart-sweet flavor.',
+      harvestSeason: 'September',
+      hardiness: 'Zone 4-7',
+      storage: '2-3 months',
+      color: '#ef5350',
+      secondaryColor: '#e57373',
+      emoji: '🍎',
+    },
+  ];
+
+  // ✅ Search logic
   const performSearch = (query) => {
-    const mockResults = [
-      {
-        id: 1,
-        name: 'Honeycrisp',
-        origin: 'Minnesota, USA',
-        originFlag: '🇺🇸',
-        taste: 'Sweet',
-        texture: 'Extra Crisp',
-        uses: ['Fresh Eating', 'Salads', 'Desserts'],
-        description: 'Exceptionally crisp and juicy with a perfect balance of sweetness and tartness.',
-        harvestSeason: 'Late September',
-        hardiness: 'Zone 3-6',
-        storage: '4-6 months',
-        color: '#ff6b6b',
-        secondaryColor: '#ffa726',
-        emoji: '🍎',
-      },
-      {
-        id: 2,
-        name: 'Granny Smith',
-        origin: 'Australia',
-        originFlag: '🇦🇺',
-        taste: 'Tart',
-        texture: 'Firm',
-        uses: ['Baking', 'Cooking', 'Fresh Eating'],
-        description: 'Bright green with a very tart flavor. Excellent for baking as it holds its shape well when cooked.',
-        harvestSeason: 'October',
-        hardiness: 'Zone 6-9',
-        storage: '5-7 months',
-        color: '#66bb6a',
-        secondaryColor: '#4caf50',
-        emoji: '🍏',
-      },
-    ];
-
     if (!query) return mockResults;
-
     const q = query.toLowerCase();
     return mockResults.filter(
       (apple) =>
@@ -87,19 +125,52 @@ function App() {
     setHasSearched(false);
   };
 
+  // ✅ Simple admin login
   const handleAdminLogin = () => {
-    console.log('Admin login requested');
+    const password = prompt('Enter admin password:');
+    if (password === 'admin123') {
+      setIsAdmin(true);
+      alert('Welcome, Admin!');
+    } else {
+      alert('Invalid password');
+    }
+  };
+
+  const handleLogout = () => {
+    setIsAdmin(false);
+    alert('Logged out successfully');
   };
 
   return (
     <Router>
-      <Navigation onAdminLogin={handleAdminLogin} />
+      <Navigation
+        onAdminLogin={handleAdminLogin}
+        isAdmin={isAdmin}
+        onLogout={handleLogout}
+      />
 
       <Routes>
+        
         {/* ✅ Signup/Login Page */}
-        <Route path="/signup-login" element={<SignupLogin />} />
+        <Route path="/signup-login" element={<SignupLogin setIsAdmin={setIsAdmin} />} />
 
-        {/* Home Page */}
+
+        {/* ✅ Create Apple Page */}
+        <Route path="/createapple" element={<CreateApple />} />
+
+        {/* ✅ Template Creator Page */}
+        <Route path="/templates" element={<TemplateCreator />} />
+
+        {/* ✅ About Page */}
+        <Route path="/about" element={<TreeScrollPage />} />
+
+        {/* ✅ Admin Dashboard */}
+        <Route
+          path="/dashboard"
+          element={isAdmin ? <AdminDashboard isAdmin={isAdmin} /> : <div>Access Denied</div>}
+        />
+
+        {/* ✅ Home Page */}
         <Route
           path="/"
           element={
@@ -131,9 +202,6 @@ function App() {
             </>
           }
         />
-
-        {/* Create Apple Page */}
-        <Route path="/createapple" element={<CreateApple />} />
       </Routes>
     </Router>
   );
