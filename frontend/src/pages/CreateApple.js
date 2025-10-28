@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import './createApple.css';
 import axios from 'axios';
 import Papa from 'papaparse'; // CSV parser
+import { useNavigate } from "react-router-dom"; // ✅ imported
 
 export default function CreateApple() {
+  const navigate = useNavigate(); // ✅ declare navigate
   const [step, setStep] = useState(0);
   const [uploadMethod, setUploadMethod] = useState(null);
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -11,7 +13,7 @@ export default function CreateApple() {
   const [uploadComplete, setUploadComplete] = useState(false);
   const [error, setError] = useState('');
 
-  // Handle file selection with CSV validation
+  // ✅ Handle file selection with CSV validation
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
     const invalidFiles = files.filter(file => !file.name.toLowerCase().endsWith('.csv'));
@@ -46,17 +48,15 @@ export default function CreateApple() {
     setError('');
   };
 
-  // Function to read CSV contents and send to backend
+  // ✅ Function to read CSV contents and send to backend
   const submitToBackend = async () => {
     try {
       let apples = [];
 
-      // Read each uploaded CSV file
       for (const file of uploadedFiles) {
         const text = await file.text();
         const parsed = Papa.parse(text, { header: true });
 
-        // ✅ Validation: Only include rows with both name and color
         parsed.data.forEach(row => {
           if (row.name && row.color) {
             apples.push({ name: row.name, color: row.color });
@@ -69,11 +69,10 @@ export default function CreateApple() {
         return;
       }
 
-      // Send valid apples to backend
       const response = await axios.post("http://localhost:5000/add-apple", { apples });
       console.log(response.data);
       alert("🎉 Resources submitted successfully to backend!");
-      handleRestart(); // Reset after successful submit
+      handleRestart();
     } catch (err) {
       console.error(err);
       alert("❌ Error submitting to backend");
@@ -84,7 +83,7 @@ export default function CreateApple() {
     <div className="create-apple-container">
       <h1 className="page-title">Create New Apple Resource 🍎</h1>
 
-      {/* Timeline */}
+      {/* ✅ Timeline */}
       <div className="timeline">
         {['Start', 'Upload', 'Confirmation', 'Review'].map((label, idx) => (
           <div key={idx} className={`timeline-step ${step === idx ? 'active' : ''}`}>
@@ -94,7 +93,7 @@ export default function CreateApple() {
         ))}
       </div>
 
-      {/* Step Content */}
+      {/* ✅ Step Content */}
       <div className="step-content-card">
         {step === 0 && (
           <div className="step">
@@ -107,6 +106,7 @@ export default function CreateApple() {
                 <li>Use <b>Download Template</b> to get the sample CSV structure.</li>
               </ul>
             </div>
+
             <div className="upload-options">
               <button
                 className="upload-btn single"
@@ -128,9 +128,10 @@ export default function CreateApple() {
                 Multiple Upload
               </button>
 
+              {/* ✅ Navigate to Template Page */}
               <button
                 className="upload-btn template"
-                onClick={() => alert('📄 Template downloaded successfully!')}
+                onClick={() => navigate("/templates")}
               >
                 Download Template
               </button>
@@ -215,10 +216,7 @@ export default function CreateApple() {
               <button className="btn-secondary" onClick={handleRestart}>
                 Restart
               </button>
-              <button
-                className="btn-primary"
-                onClick={submitToBackend} // ✅ Sends only valid rows to backend
-              >
+              <button className="btn-primary" onClick={submitToBackend}>
                 Final Submit
               </button>
             </div>
